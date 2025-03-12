@@ -6,3 +6,5 @@ simple single layer perceptron or a shallow neural network made in julia from sc
 
 # Example
 ![image](https://github.com/user-attachments/assets/77a10a15-e03b-4551-a304-776a9b79549c)
+
+![image](https://github.com/user-attachments/assets/09d5b49b-fd61-400f-abec-9eee739a33bb)
