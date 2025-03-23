@@ -1,7 +1,7 @@
 # Shallow Neural Network
 simple single layer perceptron or a shallow neural network made in julia from scratch inspired by a statquest model
 
-paste these
+paste this
 ```julia neuron.jl```
 or
 ```julia tla.jl```
