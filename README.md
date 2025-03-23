@@ -2,9 +2,9 @@
 simple single layer perceptron or a shallow neural network made in julia from scratch inspired by a statquest model
 
 paste these
-julia neuron.jl
+```julia neuron.jl```
 or
-julia tla.jl
+```julia tla.jl```
 # Diagram
 ![image](https://github.com/user-attachments/assets/7b9988af-eb58-40f4-8a14-6f80489b06b4)
 
