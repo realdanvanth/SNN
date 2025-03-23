@@ -50,7 +50,7 @@ function predict(nodes1::Vector{Layer1},nodes2::Vector{Layer2},fb::Float64,x::Fl
   return total
 end
 function data(x::Float64)
-  return x-floor(x)
+  return sin(x)^2+cos(x^2)
 end
 function dMSE(nodes1::Vector{Layer1},nodes2::Vector{Layer2},fb::Float64,s,step,e)
   sum=0.0
@@ -97,7 +97,7 @@ function gradientdescent(nodes1::Vector{Layer1},nodes2::Vector{Layer2},fb::Float
    return newnodes1, newnodes2, fb
 end
 function main()
-  n = 8 
+  n = 32 
   nodes1 = Array{Layer1, 1}(undef,n)
   nodes2 = Array{Layer2,1}(undef,n)
   for i in 1:n
@@ -108,11 +108,11 @@ function main()
     nodes2[i]=Layer2(randn()* sqrt(2.0 / n),0.0)
   end
   fb=0.0
-  lr=0.01
-  s=-2
-  e=2
-  step=0.01
-  epochs=1000
+  lr=0.001
+  s=-pi
+  e=pi
+  step=0.5
+  epochs=10000
   x = collect(s:step:e)
   y= [predict(nodes1,nodes2, fb, xi) for xi in x]
   for i in 1:epochs
@@ -127,7 +127,7 @@ function main()
     xlabel("x")
     ylabel("y")
     grid(true)
-    pause(0.1)
+    pause(0.001)
   end
   show()
 end
