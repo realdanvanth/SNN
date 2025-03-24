@@ -1,18 +1,18 @@
 using Random
 using PyPlot
 mutable struct Layer1
-    w::Float64
-    b::Float64
-    weights::Vector{Float64}
+    w::Float64#weight before activation
+    b::Float64#bias before activation
+    weights::Vector{Float64}#weights going into layer 2
 end
 mutable struct Layer2
-    w::Float64#future weights
+    w::Float64#weight After activaton
     b::Float64#neuron bias
 end
-function activation( w::Float64,b::Float64,x::Float64)
+function activation( w::Float64,b::Float64,x::Float64)#tent activation function
  return  max(1.0 - abs(w*x+b), 0.0) 
 end
-function dactivation(w::Float64,b::Float64,x::Float64)
+function dactivation(w::Float64,b::Float64,x::Float64)#differentiation of the activation
   if(w*x+b>-1.0&&w*x+b<0.0)
     return 1.0
   elseif (w*x+b>0.0&&w*x+b<1.0)
@@ -21,14 +21,14 @@ function dactivation(w::Float64,b::Float64,x::Float64)
     return 0.0
   end
 end
-function activation(prevnodes::Vector{Layer1},node::Layer2,i::Int64,x::Float64)
+function activation(prevnodes::Vector{Layer1},node::Layer2,i::Int64,x::Float64)#activation of the second layer neurons
   total=0.0
   for prevnode in prevnodes
     total+=(prevnode.weights[i]*activation(prevnode.w,prevnode.b,x))
   end
   return max(1.0 - abs(total+node.b), 0.0) 
 end
-function dactivation(prevnodes::Vector{Layer1},node::Layer2,i::Int64,x::Float64)
+function dactivation(prevnodes::Vector{Layer1},node::Layer2,i::Int64,x::Float64)#diff act for second layer
   total=0.0
   for prevnode in prevnodes
     total+=(prevnode.weights[i]*activation(prevnode.w,prevnode.b,x))
@@ -44,25 +44,25 @@ end
 function predict(nodes1::Vector{Layer1},nodes2::Vector{Layer2},fb::Float64,x::Float64)
   total=0.0
   for i in eachindex(nodes2)
-    total+=(activation(nodes1,nodes2[i],i,x)*nodes2[i].w)
+    total+=(activation(nodes1,nodes2[i],i,x)*nodes2[i].w)#summing up activation of secondlayer neurons
   end
   total+=fb
   return total
 end
 function data(x::Float64)
-  return sin(x)^2+cos(x^2)
+  return x-floor(x)
 end
-function dMSE(nodes1::Vector{Layer1},nodes2::Vector{Layer2},fb::Float64,s,step,e)
+function dMSE(nodes1::Vector{Layer1},nodes2::Vector{Layer2},fb::Float64,s,step,e)#mean square error for the loss funtion , refer statquest
   sum=0.0
   for i in s:step:e
     sum+=(data(i)-predict(nodes1,nodes2,fb,i))
   end
   return -2*(sum)
 end
-function gradientdescent(nodes1::Vector{Layer1},nodes2::Vector{Layer2},fb::Float64,lr::Float64,s,step,e)
+function gradientdescent(nodes1::Vector{Layer1},nodes2::Vector{Layer2},fb::Float64,lr::Float64,s,step,e)#refer stat quest gradientdescent
    fb-=dMSE(nodes1,nodes2,fb,s,step,e)/(((e - s) / step))*lr
-   newnodes1 = deepcopy(nodes1)
-   newnodes2 = deepcopy(nodes2)
+   newnodes1 = deepcopy(nodes1)# output layer 1
+   newnodes2 = deepcopy(nodes2)# output layer 2
    for i in eachindex(nodes2)
      dw=0.0
      db=0.0
@@ -101,7 +101,7 @@ function main()
   nodes1 = Array{Layer1, 1}(undef,n)
   nodes2 = Array{Layer2,1}(undef,n)
   for i in 1:n
-    nodes1[i]=Layer1(randn()* sqrt(2.0 / n),0.0,randn(n)[:]* sqrt(2.0 / n))
+    nodes1[i]=Layer1(randn()* sqrt(2.0 / n),0.0,randn(n)[:]* sqrt(2.0 / n))# Initializing from the normal distribtion
   end
   w=pi
   for i in 1:n
@@ -119,9 +119,9 @@ function main()
     nodes1,nodes2,fb=gradientdescent(nodes1,nodes2,fb,lr,s,step,e)
     clf()
     newy = [predict(nodes1,nodes2, fb, xi) for xi in x]
-    plot(x, data.(x), label="sin(x)", color="blue", linewidth=2)
-    plot(x, y, label="Initial", linestyle="dashed", color="red", linewidth=2)
-    plot(x, newy, label="Epoch $i", linestyle="dashed", color="green", linewidth=2)  
+    plot(x, data.(x), label="sin(x)", color="blue", linewidth=2)#the line it is trying to predict
+    plot(x, y, label="Initial", linestyle="dashed", color="red", linewidth=2)# Initial prediction
+    plot(x, newy, label="Epoch $i", linestyle="dashed", color="green", linewidth=2)# Training Progress 
     legend()
     title("Neural Network Training Progress")
     xlabel("x")
