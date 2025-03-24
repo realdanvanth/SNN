@@ -7,7 +7,13 @@ or
 ```julia tla.jl```
 tla is two layer network
 # Diagram
+single layer
 ![image](https://github.com/user-attachments/assets/7b9988af-eb58-40f4-8a14-6f80489b06b4)
+
+two layer
+![image](https://github.com/user-attachments/assets/096f0b60-9e51-4c7a-b68e-ef2c8ba482bc)
+
+
 
 # Example
 ![image](https://github.com/user-attachments/assets/77a10a15-e03b-4551-a304-776a9b79549c)
