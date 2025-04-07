@@ -6,7 +6,7 @@ paste this
 or
 ```julia tla.jl```
 tla is two layer network
-# Architecture
+# Architecture diagram
 # single layer
 ![image](https://github.com/user-attachments/assets/7b9988af-eb58-40f4-8a14-6f80489b06b4)
 
